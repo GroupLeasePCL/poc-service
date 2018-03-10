@@ -24,7 +24,7 @@ public class EmploymentApplicationDto {
   private String degree;
   private String university;
   private String major;
-  private float gpa;
+  private Float gpa;
   private String currentCompanyName;
   private LocalDate startDate;
   private LocalDate endDate;
@@ -135,11 +135,11 @@ public class EmploymentApplicationDto {
     this.major = major;
   }
 
-  public float getGpa() {
+  public Float getGpa() {
     return gpa;
   }
 
-  public void setGpa(float gpa) {
+  public void setGpa(Float gpa) {
     this.gpa = gpa;
   }
 

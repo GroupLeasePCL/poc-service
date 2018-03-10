@@ -26,14 +26,14 @@ public class EmploymentApplicationCreatedEvent {
   private String degree;
   private String university;
   private String major;
-  private float gpa;
+  private Float gpa;
   private String currentCompanyName;
   private LocalDate startDate;
   private LocalDate endDate;
   private String role;
   private String responsibility;
 
-  public EmploymentApplicationCreatedEvent(String id, String firstName, String lastName, LocalDate birthDate, String email, String contactNumber, String appliedPosition, String address, String mobileNumber, MonetaryAmount expectedSalary, String referencePhoneNumber, String degree, String university, String major, float gpa, String currentCompanyName, LocalDate startDate, LocalDate endDate, String role, String responsibility) {
+  public EmploymentApplicationCreatedEvent(String id, String firstName, String lastName, LocalDate birthDate, String email, String contactNumber, String appliedPosition, String address, String mobileNumber, MonetaryAmount expectedSalary, String referencePhoneNumber, String degree, String university, String major, Float gpa, String currentCompanyName, LocalDate startDate, LocalDate endDate, String role, String responsibility) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -112,7 +112,7 @@ public class EmploymentApplicationCreatedEvent {
     return major;
   }
 
-  public float getGpa() {
+  public Float getGpa() {
     return gpa;
   }
 

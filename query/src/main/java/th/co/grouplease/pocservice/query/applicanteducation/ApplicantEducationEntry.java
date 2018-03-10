@@ -13,7 +13,7 @@ public class ApplicantEducationEntry {
   private String degree;
   private String university;
   private String major;
-  private float gpa;
+  private Float gpa;
 
   public String getApplicationId() {
     return applicationId;
@@ -47,11 +47,11 @@ public class ApplicantEducationEntry {
     this.major = major;
   }
 
-  public float getGpa() {
+  public Float getGpa() {
     return gpa;
   }
 
-  public void setGpa(float gpa) {
+  public void setGpa(Float gpa) {
     this.gpa = gpa;
   }
 }

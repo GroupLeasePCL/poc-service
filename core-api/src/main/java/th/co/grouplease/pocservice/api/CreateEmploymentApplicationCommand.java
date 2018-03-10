@@ -41,7 +41,7 @@ public class CreateEmploymentApplicationCommand {
   private String degree;
   private String university;
   private String major;
-  private float gpa;
+  private Float gpa;
 
   private String currentCompanyName;
   private LocalDate startDate;
@@ -67,7 +67,7 @@ public class CreateEmploymentApplicationCommand {
     private String degree;
     private String university;
     private String major;
-    private float gpa;
+    private Float gpa;
     private String currentCompanyName;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -139,7 +139,7 @@ public class CreateEmploymentApplicationCommand {
       return this;
     }
 
-    public Builder gpa(float gpa){
+    public Builder gpa(Float gpa){
       this.gpa = gpa;
       return this;
     }
@@ -253,7 +253,7 @@ public class CreateEmploymentApplicationCommand {
     return major;
   }
 
-  public float getGpa() {
+  public Float getGpa() {
     return gpa;
   }
 

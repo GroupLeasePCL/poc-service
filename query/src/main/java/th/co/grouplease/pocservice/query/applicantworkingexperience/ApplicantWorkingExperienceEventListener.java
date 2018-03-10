@@ -25,6 +25,13 @@ public class ApplicantWorkingExperienceEventListener {
 
   @EventHandler
   public void on(EmploymentApplicationCreatedEvent event){
-
+    ApplicantWorkingExperienceEntry entry = new ApplicantWorkingExperienceEntry();
+    entry.setApplicationId(event.getId());
+    entry.setCompany(event.getCurrentCompanyName());
+    entry.setStartDate(event.getStartDate());
+    entry.setEndDate(event.getEndDate());
+    entry.setRole(event.getRole());
+    entry.setResponsibility(event.getResponsibility());
+    repository.save(entry).subscribe();
   }
 }
