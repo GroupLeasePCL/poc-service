@@ -10,8 +10,8 @@
     <modules>
         <module>core</module>
         <module>core-api</module>
-	<module>query</module>
-	<module>web</module>
+        <module>query</module>
+        <module>web</module>
     </modules>
 
     <packaging>pom</packaging>
