@@ -44,7 +44,6 @@ public class EmploymentApplicationController {
   @PostMapping("/applications")
   @ResponseStatus(HttpStatus.CREATED)
   public Mono<Void> create(@RequestBody CreateEmploymentApplicationCommand command){
-    commandGateway.send(command);
-    return Mono.empty();
+    return Mono.fromFuture(commandGateway.send(command));
   }
 }
