@@ -10,9 +10,9 @@
     <modules>
         <module>core</module>
         <module>core-api</module>
-		<module>query</module>
-		<module>web</module>
-	</modules>
+	<module>query</module>
+	<module>web</module>
+    </modules>
 
     <packaging>pom</packaging>
 
@@ -31,7 +31,6 @@
 	</properties>
 
 	<dependencies>
-
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -98,14 +97,14 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+		<!-- Required by axon -->
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/xom/xom -->
+		<!-- Required by axon -->
 		<dependency>
 			<groupId>xom</groupId>
 			<artifactId>xom</artifactId>
