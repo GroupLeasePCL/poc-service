@@ -14,8 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import th.co.grouplease.pocservice.api.CreateEmploymentApplicationCommand;
 import th.co.grouplease.pocservice.dto.EmploymentApplicationDto;
-import th.co.grouplease.pocservice.query.EmploymentApplicationEntry;
-import th.co.grouplease.pocservice.query.EmploymentApplicationRepository;
+import th.co.grouplease.pocservice.query.application.EmploymentApplicationEntry;
+import th.co.grouplease.pocservice.query.application.EmploymentApplicationRepository;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;

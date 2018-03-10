@@ -1,37 +1,26 @@
 /*
  * Copyright (c) Group Lease Public Company Limited. All rights reserved. (http://www.grouplease.co.th/)
- * Author: Peeranut Ngaorungsri (peeranut.ng@grouplease.co.th) 3/8/18 2:51 PM
+ * Author: Peeranut Ngaorungsri (peeranut.ng@grouplease.co.th) 3/10/18 5:30 PM
  */
-package th.co.grouplease.pocservice.query;
+package th.co.grouplease.pocservice.query.application;
 
 
 import org.springframework.data.annotation.Id;
 
 public class EmploymentApplicationEntry {
   @Id
-  private String id;
+  private String applicationId;
   private String firstName;
   private String lastName;
   private String email;
   private String address;
 
-  public EmploymentApplicationEntry(){
+  public String getApplicationId() {
+    return applicationId;
   }
 
-  public EmploymentApplicationEntry(String id, String firstName, String lastName, String email, String address) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.address = address;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
+  public void setApplicationId(String applicationId) {
+    this.applicationId = applicationId;
   }
 
   public String getFirstName() {
