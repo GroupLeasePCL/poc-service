@@ -7,6 +7,7 @@ package th.co.grouplease.pocservice.config;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import th.co.grouplease.pocservice.api.CreateEmploymentApplicationCommand;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Component
+@Profile("data")
 public class DataInitializer implements CommandLineRunner {
 
   @Inject
@@ -22,17 +24,19 @@ public class DataInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-//    initializeData(100);
+    initializeData(5);
   }
 
   private void initializeData(int size){
-    for(int i = 0 ; i < size ; i++)
-      commandGateway.send(new CreateEmploymentApplicationCommand.Builder(UUID.randomUUID().toString())
+    for(int i = 0 ; i < size ; i++) {
+      String id = UUID.randomUUID().toString();
+      commandGateway.send(new CreateEmploymentApplicationCommand.Builder(id)
           .name("Peeranut", "Ngaorungsri")
           .birthDate(LocalDate.now())
           .email("nutteen@gmail.com")
           .contactNumber("0887907089")
           .appliedPosition("IT Manager")
           .build());
+    }
   }
 }

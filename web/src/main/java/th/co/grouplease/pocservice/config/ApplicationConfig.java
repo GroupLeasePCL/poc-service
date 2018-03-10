@@ -7,7 +7,13 @@ package th.co.grouplease.pocservice.config;
 
 import com.mongodb.MongoClient;
 import org.axonframework.commandhandling.SimpleCommandBus;
+import org.axonframework.common.transaction.TransactionManager;
+import org.axonframework.config.EventHandlingConfiguration;
+import org.axonframework.eventhandling.*;
+import org.axonframework.eventhandling.async.AsynchronousEventProcessingStrategy;
+import org.axonframework.eventhandling.async.SequentialPerAggregatePolicy;
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor;
+import org.axonframework.messaging.interceptors.TransactionManagingInterceptor;
 import org.axonframework.mongo.eventhandling.saga.repository.MongoSagaStore;
 import org.axonframework.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
 import org.axonframework.mongo.eventsourcing.eventstore.StorageStrategy;
@@ -16,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.inject.Inject;
 
@@ -58,5 +65,31 @@ public class ApplicationConfig {
   @Bean
   public MongoSagaStore sagaRepository(org.axonframework.mongo.MongoTemplate axonTemplate) {
     return new MongoSagaStore(axonTemplate);
+  }
+
+  @Bean
+  public ThreadPoolTaskExecutor taskExecutor(){
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(4);
+    executor.setMaxPoolSize(4);
+    executor.setQueueCapacity(500);
+    executor.initialize();
+    return executor;
+  }
+
+  @Inject
+  public void configureEventHandlers(EventHandlingConfiguration ehConfig, ThreadPoolTaskExecutor executor, TransactionManager axonTxManager) {
+    ehConfig.registerEventProcessor("asyncSubscriber", (configuration, name, eventHandlers) -> {
+      final SubscribingEventProcessor processor = new SubscribingEventProcessor(name,
+          new SimpleEventHandlerInvoker(eventHandlers,
+              configuration.parameterResolverFactory(),
+              configuration.getComponent(ListenerInvocationErrorHandler.class, LoggingErrorHandler::new)),
+          configuration.eventBus(),
+          new AsynchronousEventProcessingStrategy(executor, new SequentialPerAggregatePolicy()),
+          PropagatingErrorHandler.INSTANCE,
+          configuration.messageMonitor(SubscribingEventProcessor.class, name));
+      processor.registerInterceptor(new TransactionManagingInterceptor<>(axonTxManager));
+      return processor;
+    });
   }
 }

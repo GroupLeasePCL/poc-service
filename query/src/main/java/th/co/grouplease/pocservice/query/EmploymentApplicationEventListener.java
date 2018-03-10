@@ -5,6 +5,7 @@
 
 package th.co.grouplease.pocservice.query;
 
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
@@ -12,6 +13,7 @@ import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
 import javax.inject.Inject;
 
 @Component
+@ProcessingGroup("asyncSubscriber")
 public class EmploymentApplicationEventListener {
 
   private final EmploymentApplicationRepository repository;
