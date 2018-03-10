@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 @Component
 public class EmploymentApplicationEventListener {
+
   private final EmploymentApplicationRepository repository;
 
   @Inject
@@ -24,6 +25,10 @@ public class EmploymentApplicationEventListener {
   public void on(EmploymentApplicationCreatedEvent event){
     EmploymentApplicationEntry entry = new EmploymentApplicationEntry();
     entry.setId(event.getId());
-    repository.save(entry);
+    entry.setFirstName(event.getFirstName());
+    entry.setLastName(event.getLastName());
+    entry.setEmail(event.getEmail());
+    entry.setAddress(event.getAddress());
+    repository.save(entry).subscribe();
   }
 }

@@ -24,7 +24,27 @@ public class EmploymentApplication {
 
   @CommandHandler
   public EmploymentApplication(CreateEmploymentApplicationCommand command){
-    apply(new EmploymentApplicationCreatedEvent(command.getId()));
+    apply(new EmploymentApplicationCreatedEvent(
+        command.getId(),
+        command.getFirstName(),
+        command.getLastName(),
+        command.getBirthDate(),
+        command.getEmail(),
+        command.getContactNumber(),
+        command.getAppliedPosition(),
+        command.getAddress(),
+        command.getMobileNumber(),
+        command.getExpectedSalary(),
+        command.getReferencePhoneNumber(),
+        command.getDegree(),
+        command.getUniversity(),
+        command.getMajor(),
+        command.getGpa(),
+        command.getCurrentCompanyName(),
+        command.getStartDate(),
+        command.getEndDate(),
+        command.getRole(),
+        command.getResponsibility()));
   }
 
   @EventSourcingHandler

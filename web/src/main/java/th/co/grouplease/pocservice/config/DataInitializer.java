@@ -7,11 +7,11 @@ package th.co.grouplease.pocservice.config;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import th.co.grouplease.pocservice.api.CreateEmploymentApplicationCommand;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Component
@@ -20,11 +20,19 @@ public class DataInitializer implements CommandLineRunner {
   @Inject
   CommandGateway commandGateway;
 
-
   @Override
   public void run(String... args) {
-    for(int i = 0 ; i < 10 ; i++){
-      commandGateway.send(new CreateEmploymentApplicationCommand(UUID.randomUUID().toString()));
-    }
+//    initializeData(100);
+  }
+
+  private void initializeData(int size){
+    for(int i = 0 ; i < size ; i++)
+      commandGateway.send(new CreateEmploymentApplicationCommand.Builder(UUID.randomUUID().toString())
+          .name("Peeranut", "Ngaorungsri")
+          .birthDate(LocalDate.now())
+          .email("nutteen@gmail.com")
+          .contactNumber("0887907089")
+          .appliedPosition("IT Manager")
+          .build());
   }
 }
