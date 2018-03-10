@@ -175,14 +175,6 @@ public class CreateEmploymentApplicationCommand {
   }
 
   private CreateEmploymentApplicationCommand(Builder builder){
-    Objects.requireNonNull(builder.id);
-    Objects.requireNonNull(builder.firstName);
-    Objects.requireNonNull(builder.lastName);
-    Objects.requireNonNull(builder.birthDate);
-    Objects.requireNonNull(builder.email);
-    Objects.requireNonNull(builder.contactNumber);
-    Objects.requireNonNull(builder.appliedPosition);
-
     this.id = builder.id;
     this.firstName = builder.firstName;
     this.lastName = builder.lastName;
