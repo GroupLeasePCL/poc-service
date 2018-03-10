@@ -8,7 +8,9 @@ package th.co.grouplease.pocservice.query.applicantpersonalinfo;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
+import th.co.grouplease.pocservice.api.PersonalInformationUpdatedEvent;
 
 import javax.inject.Inject;
 
@@ -38,5 +40,23 @@ public class ApplicantPersonalInformationEventListener {
     entry.setExpectedSalary(event.getExpectedSalary());
     entry.setReferencePhoneNumber(event.getReferencePhoneNumber());
     repository.save(entry).subscribe();
+  }
+
+  @EventHandler
+  public void on(PersonalInformationUpdatedEvent event){
+    repository.findById(event.getApplicationId())
+        .flatMap(entry->{
+          entry.setFirstName(event.getFirstName());
+          entry.setLastName(event.getLastName());
+          entry.setBirthDate(event.getBirthDate());
+          entry.setAddress(event.getAddress());
+          entry.setEmail(event.getEmail());
+          entry.setContactNumber(event.getContactNumber());
+          entry.setMobileNumber(event.getMobileNumber());
+          entry.setAppliedPosition(event.getAppliedPosition());
+          entry.setExpectedSalary(event.getExpectedSalary());
+          entry.setReferencePhoneNumber(event.getReferencePhoneNumber());
+          return Mono.just(entry);
+        }).subscribe(entry-> repository.save(entry).subscribe());
   }
 }

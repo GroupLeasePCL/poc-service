@@ -9,7 +9,6 @@ import javax.money.MonetaryAmount;
 import java.time.LocalDate;
 
 public class EmploymentApplicationDto {
-
   private String firstName;
   private String lastName;
   private LocalDate birthDate;

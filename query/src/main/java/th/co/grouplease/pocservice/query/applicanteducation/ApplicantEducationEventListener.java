@@ -8,6 +8,8 @@ package th.co.grouplease.pocservice.query.applicanteducation;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+import th.co.grouplease.pocservice.api.EducationUpdatedEvent;
 import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
 
 import javax.inject.Inject;
@@ -31,5 +33,17 @@ public class ApplicantEducationEventListener {
     entry.setMajor(event.getMajor());
     entry.setGpa(event.getGpa());
     repository.save(entry).subscribe();
+  }
+
+  @EventHandler
+  public void on(EducationUpdatedEvent event){
+    repository.findById(event.getApplicationId())
+        .flatMap(entry->{
+          entry.setMajor(event.getMajor());
+          entry.setUniversity(event.getUniversity());
+          entry.setDegree(event.getDegree());
+          entry.setGpa(event.getGpa());
+          return Mono.just(entry);
+        }).subscribe(entry-> repository.save(entry).subscribe());
   }
 }

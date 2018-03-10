@@ -50,7 +50,6 @@ public class CreateEmploymentApplicationCommand {
   private String responsibility;
 
   public static class Builder {
-    // Required
     private String id;
     private String firstName;
     private String lastName;
@@ -58,8 +57,6 @@ public class CreateEmploymentApplicationCommand {
     private String email;
     private String contactNumber;
     private String appliedPosition;
-
-    // Optional
     private String address;
     private String mobileNumber;
     private MonetaryAmount expectedSalary;

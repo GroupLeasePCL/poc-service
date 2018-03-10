@@ -13,6 +13,12 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import th.co.grouplease.pocservice.api.CreateEmploymentApplicationCommand;
+import th.co.grouplease.pocservice.api.UpdateEducationCommand;
+import th.co.grouplease.pocservice.api.UpdatePersonalInformationCommand;
+import th.co.grouplease.pocservice.api.UpdateWorkingExperienceCommand;
+import th.co.grouplease.pocservice.dto.ApplicantEducationDto;
+import th.co.grouplease.pocservice.dto.ApplicantPersonalInformationDto;
+import th.co.grouplease.pocservice.dto.ApplicantWorkingExperienceDto;
 import th.co.grouplease.pocservice.dto.EmploymentApplicationDto;
 import th.co.grouplease.pocservice.query.applicanteducation.ApplicantEducationEntry;
 import th.co.grouplease.pocservice.query.applicanteducation.ApplicantEducationRepository;
@@ -91,13 +97,53 @@ public class EmploymentApplicationController {
     return applicantPersonalInformationRepository.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
+  @PutMapping("/{id}/personal-info")
+  public Mono<Void> updatePersonalInformation(@PathVariable String id, @RequestBody ApplicantPersonalInformationDto applicantPersonalInformationDto){
+    UpdatePersonalInformationCommand command = new UpdatePersonalInformationCommand.Builder(id)
+        .firstName(applicantPersonalInformationDto.getFirstName())
+        .lastName(applicantPersonalInformationDto.getLastName())
+        .birthDate(applicantPersonalInformationDto.getBirthDate())
+        .address(applicantPersonalInformationDto.getAddress())
+        .email(applicantPersonalInformationDto.getEmail())
+        .contactNumber(applicantPersonalInformationDto.getContactNumber())
+        .mobileNumber(applicantPersonalInformationDto.getMobileNumber())
+        .appliedPosition(applicantPersonalInformationDto.getAppliedPosition())
+        .expectedSalary(applicantPersonalInformationDto.getExpectedSalary())
+        .referencePhoneNumber(applicantPersonalInformationDto.getReferencePhoneNumber())
+        .build();
+    return Mono.fromFuture(commandGateway.send(command)).then();
+  }
+
   @GetMapping("/{id}/education")
   public Mono<ApplicantEducationEntry> findEducationById(@PathVariable String id){
     return applicantEducationRepository.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
+  @PutMapping("/{id}/education")
+  public Mono<Void> updateEducation(@PathVariable String id, @RequestBody ApplicantEducationDto applicantEducationDto){
+    UpdateEducationCommand command = new UpdateEducationCommand.Builder(id)
+        .degree(applicantEducationDto.getDegree())
+        .university(applicantEducationDto.getUniversity())
+        .major(applicantEducationDto.getMajor())
+        .gpa(applicantEducationDto.getGpa())
+        .build();
+    return Mono.fromFuture(commandGateway.send(command)).then();
+  }
+
   @GetMapping("/{id}/working-experience")
   public Mono<ApplicantWorkingExperienceEntry> findWorkingExperienceById(@PathVariable String id){
     return applicantWorkingExperienceRepository.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
+  }
+
+  @PutMapping("{id}/working-experience")
+  public Mono<Void> updateWorkingExperience(@PathVariable String id, @RequestBody ApplicantWorkingExperienceDto applicantWorkingExperienceDto){
+    UpdateWorkingExperienceCommand command = new UpdateWorkingExperienceCommand.Builder(id)
+        .currentCompanyName(applicantWorkingExperienceDto.getCompany())
+        .startDate(applicantWorkingExperienceDto.getStartDate())
+        .endDate(applicantWorkingExperienceDto.getEndDate())
+        .role(applicantWorkingExperienceDto.getRole())
+        .responsibility(applicantWorkingExperienceDto.getResponsibility())
+        .build();
+    return Mono.fromFuture(commandGateway.send(command)).then();
   }
 }

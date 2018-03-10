@@ -9,8 +9,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import th.co.grouplease.pocservice.api.CreateEmploymentApplicationCommand;
-import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
+import th.co.grouplease.pocservice.api.*;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
@@ -40,6 +39,40 @@ public class EmploymentApplication {
         command.getUniversity(),
         command.getMajor(),
         command.getGpa(),
+        command.getCurrentCompanyName(),
+        command.getStartDate(),
+        command.getEndDate(),
+        command.getRole(),
+        command.getResponsibility()));
+  }
+
+  @CommandHandler
+  public void updatePersonalInformation(UpdatePersonalInformationCommand command){
+    apply(new PersonalInformationUpdatedEvent(command.getApplicationId(),
+        command.getFirstName(),
+        command.getLastName(),
+        command.getBirthDate(),
+        command.getAddress(),
+        command.getEmail(),
+        command.getContactNumber(),
+        command.getMobileNumber(),
+        command.getAppliedPosition(),
+        command.getExpectedSalary(),
+        command.getReferencePhoneNumber()));
+  }
+
+  @CommandHandler
+  public void updateEducation(UpdateEducationCommand command){
+    apply(new EducationUpdatedEvent(command.getApplicationId(),
+        command.getDegree(),
+        command.getUniversity(),
+        command.getMajor(),
+        command.getGpa()));
+  }
+
+  @CommandHandler
+  public void updateWorkingExperience(UpdateWorkingExperienceCommand command){
+    apply(new WorkingExperienceUpdatedEvent(command.getApplicationId(),
         command.getCurrentCompanyName(),
         command.getStartDate(),
         command.getEndDate(),

@@ -8,7 +8,9 @@ package th.co.grouplease.pocservice.query.applicantworkingexperience;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 import th.co.grouplease.pocservice.api.EmploymentApplicationCreatedEvent;
+import th.co.grouplease.pocservice.api.WorkingExperienceUpdatedEvent;
 
 import javax.inject.Inject;
 
@@ -33,5 +35,18 @@ public class ApplicantWorkingExperienceEventListener {
     entry.setRole(event.getRole());
     entry.setResponsibility(event.getResponsibility());
     repository.save(entry).subscribe();
+  }
+
+  @EventHandler
+  public void on(WorkingExperienceUpdatedEvent event){
+    repository.findById(event.getApplicationId())
+        .flatMap(entry->{
+          entry.setCompany(event.getCurrentCompanyName());
+          entry.setStartDate(event.getStartDate());
+          entry.setEndDate(event.getEndDate());
+          entry.setRole(event.getRole());
+          entry.setResponsibility(event.getResponsibility());
+          return Mono.just(entry);
+        }).subscribe(entry->repository.save(entry).subscribe());
   }
 }
