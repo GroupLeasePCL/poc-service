@@ -5,7 +5,7 @@
 
 package th.co.grouplease.pocservice.query.applicanteducation;
 
-import org.springframework.data.repository.reactive.ReactiveSortingRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface ApplicantEducationRepository extends ReactiveSortingRepository<ApplicantEducationEntry, String>{
+public interface ApplicantEducationRepository extends ReactiveMongoRepository<ApplicantEducationEntry, String> {
 }

@@ -24,7 +24,7 @@ public class DataInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    initializeData(5);
+    initializeData(1000);
   }
 
   private void initializeData(int size){

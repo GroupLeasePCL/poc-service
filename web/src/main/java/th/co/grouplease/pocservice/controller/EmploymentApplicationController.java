@@ -6,8 +6,12 @@
 package th.co.grouplease.pocservice.controller;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -36,6 +40,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "/employment-applications")
 public class EmploymentApplicationController {
+  private static final ExampleMatcher employmentApplicationMatcher = ExampleMatcher.matching()
+      .withMatcher("firstName", match -> match.contains().ignoreCase())
+      .withMatcher("lastName", match ->match.contains().ignoreCase())
+      .withMatcher("email", match->match.contains().ignoreCase());
+
   private final CommandGateway commandGateway;
   private final EmploymentApplicationRepository employmentApplicationRepository;
   private final ApplicantPersonalInformationRepository applicantPersonalInformationRepository;
@@ -61,8 +70,20 @@ public class EmploymentApplicationController {
   }
 
   @GetMapping
-  public Flux<EmploymentApplicationEntry> findAll(@NotNull @RequestParam("page") int page, @NotNull @RequestParam int pageSize){
-    return employmentApplicationRepository.findAllBy(PageRequest.of(page, pageSize));
+  public Flux<EmploymentApplicationEntry> findAll(@NotNull @RequestParam("page") Integer page, @NotNull @RequestParam Integer pageSize,
+                                                  @Nullable @RequestParam String firstName, @Nullable @RequestParam String lastName, @Nullable @RequestParam String email){
+    EmploymentApplicationEntry probe = new EmploymentApplicationEntry();
+    probe.setFirstName(firstName);
+    probe.setLastName(lastName);
+    probe.setEmail(email);
+
+    if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(email)) {
+      return employmentApplicationRepository.findAllBy(PageRequest.of(page, pageSize));
+    } else {
+      // TODO: This is not good for performance as we asked to fetch from the beginning of the collection and skip
+      // TODO: The better one is to have the support from Repository to build the query with Pageable
+      return employmentApplicationRepository.findAll(Example.of(probe, employmentApplicationMatcher)).skip(page * pageSize).limitRequest(pageSize);
+    }
   }
 
   @PostMapping

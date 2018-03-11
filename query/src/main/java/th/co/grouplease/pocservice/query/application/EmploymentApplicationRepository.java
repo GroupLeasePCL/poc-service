@@ -6,9 +6,9 @@
 package th.co.grouplease.pocservice.query.application;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.reactive.ReactiveSortingRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 
-public interface EmploymentApplicationRepository extends ReactiveSortingRepository<EmploymentApplicationEntry, String> {
+public interface EmploymentApplicationRepository extends ReactiveMongoRepository<EmploymentApplicationEntry, String> {
   Flux<EmploymentApplicationEntry> findAllBy(Pageable pageable);
 }

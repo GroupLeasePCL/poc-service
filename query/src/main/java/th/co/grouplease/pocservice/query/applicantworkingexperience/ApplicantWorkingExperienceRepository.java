@@ -5,7 +5,7 @@
 
 package th.co.grouplease.pocservice.query.applicantworkingexperience;
 
-import org.springframework.data.repository.reactive.ReactiveSortingRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface ApplicantWorkingExperienceRepository extends ReactiveSortingRepository<ApplicantWorkingExperienceEntry, String> {
+public interface ApplicantWorkingExperienceRepository extends ReactiveMongoRepository<ApplicantWorkingExperienceEntry, String> {
 }
