@@ -32,6 +32,7 @@ import th.co.grouplease.pocservice.query.applicantworkingexperience.ApplicantWor
 import th.co.grouplease.pocservice.query.applicantworkingexperience.ApplicantWorkingExperienceRepository;
 import th.co.grouplease.pocservice.query.application.EmploymentApplicationEntry;
 import th.co.grouplease.pocservice.query.application.EmploymentApplicationRepository;
+import th.co.grouplease.pocservice.util.OffsetPageRequest;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -40,7 +41,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "/employment-applications")
 public class EmploymentApplicationController {
-  private static final ExampleMatcher employmentApplicationMatcher = ExampleMatcher.matching()
+  private static final ExampleMatcher employmentApplicationMatcher = ExampleMatcher.matchingAny()
       .withMatcher("firstName", match -> match.contains().ignoreCase())
       .withMatcher("lastName", match ->match.contains().ignoreCase())
       .withMatcher("email", match->match.contains().ignoreCase());
@@ -70,19 +71,20 @@ public class EmploymentApplicationController {
   }
 
   @GetMapping
-  public Flux<EmploymentApplicationEntry> findAll(@NotNull @RequestParam("page") Integer page, @NotNull @RequestParam Integer pageSize,
+  public Flux<EmploymentApplicationEntry> findAll(@NotNull @RequestParam("offset") Integer offset, @NotNull @RequestParam Integer limit,
                                                   @Nullable @RequestParam String firstName, @Nullable @RequestParam String lastName, @Nullable @RequestParam String email){
     EmploymentApplicationEntry probe = new EmploymentApplicationEntry();
     probe.setFirstName(firstName);
     probe.setLastName(lastName);
     probe.setEmail(email);
 
+
     if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(email)) {
-      return employmentApplicationRepository.findAllBy(PageRequest.of(page, pageSize));
+      return employmentApplicationRepository.findAllBy(OffsetPageRequest.of(offset, limit));
     } else {
       // TODO: This is not good for performance as we asked to fetch from the beginning of the collection and skip
       // TODO: The better one is to have the support from Repository to build the query with Pageable
-      return employmentApplicationRepository.findAll(Example.of(probe, employmentApplicationMatcher)).skip(page * pageSize).limitRequest(pageSize);
+      return employmentApplicationRepository.findAll(Example.of(probe, employmentApplicationMatcher)).skip(offset).limitRequest(limit);
     }
   }
 
